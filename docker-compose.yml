@@ -1,23 +1,23 @@
 version: '3.8'
 
-app: 
+services: 
   calendar:
     build: ./
-    command: ./wait-for-postgres.sh db ./calendar
+    command: ./check-out-db.sh db ./calendar
     ports: 
       - 8000:8000
-    depends-on: 
+    depends_on: 
       - db
-    enviroment:
+    environment:
       - DB_PASSWORD=qwerty1234
 
   db:
-    restart: always
     image: postgres:latest
     volumes:
-      - ./.database/postgres/data:/var/lib/postgresql/data
-    enviroment:
+      - db_data:/var/lib/postgresql/data
+    environment:
       - POSTGRES_PASSWORD=qwerty1234
     ports:
       - 5438:5432
-
+volumes:
+  db_data:
